@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+<div id="container" style="height: 100%"></div>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<script type="text/javascript">
+
+    var names;
+    var confirmed;
+    var dead;
+    var cured;
+    var suspected;
+    $.ajaxSettings.async = false;
+    $.get("http://127.0.0.1:80/api/all", function (dataResp, status) {
+        names = dataResp["data"]["names"];
+        confirmed = dataResp["data"]["confirmed"];
+        dead = dataResp["data"]["dead"];
+        cured = dataResp["data"]["cured"];
+        suspected = dataResp["data"]["suspected"];
+    }, "json");
+
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+    var posList = [
+        'left', 'right', 'top', 'bottom',
+        'inside',
+        'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+        'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+    ];
+
+    app.configParameters = {
+        rotate: {
+            min: -90,
+            max: 90
+        },
+        align: {
+            options: {
+                left: 'left',
+                center: 'center',
+                right: 'right'
+            }
+        },
+        verticalAlign: {
+            options: {
+                top: 'top',
+                middle: 'middle',
+                bottom: 'bottom'
+            }
+        },
+        position: {
+            options: echarts.util.reduce(posList, function (map, pos) {
+                map[pos] = pos;
+                return map;
+            }, {})
+        },
+        distance: {
+            min: 0,
+            max: 100
+        }
+    };
+
+    app.config = {
+        rotate: 0,
+        align: 'left',
+        verticalAlign: 'middle',
+        position: 'insideBottom',
+        distance: 15,
+        onChange: function () {
+            var labelOption = {
+                normal: {
+                    rotate: app.config.rotate,
+                    align: app.config.align,
+                    verticalAlign: app.config.verticalAlign,
+                    position: app.config.position,
+                    distance: app.config.distance
+                }
+            };
+            myChart.setOption({
+                series: [{
+                    label: labelOption
+                }, {
+                    label: labelOption
+                }, {
+                    label: labelOption
+                }, {
+                    label: labelOption
+                }]
+            });
+        }
+    };
+
+    window.onresize = function () {
+        echartBar.resize();
+    }
+
+    var labelOption = {
+        show: true,
+        position: app.config.position,
+        distance: app.config.distance,
+        align: app.config.align,
+        verticalAlign: app.config.verticalAlign,
+        rotate: app.config.rotate,
+        formatter: '{c}  {name|{a}}',
+        fontSize: 16,
+        rich: {
+            name: {
+                textBorderColor: '#fff'
+            }
+        }
+    };
+
+    option = {
+        dataZoom: [
+            {
+                type: 'inside',
+                show: false,
+                start: 0,
+                end: 1
+            }
+        ],
+
+        color: ['#003366', '#006699', '#4cabce', '#e5323e'],
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            data: ['确认', '治愈', '疑似', '死亡']
+        },
+        toolbox: {
+            show: true,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+        },
+        xAxis: [
+            {
+                type: 'category',
+                axisTick: {show: false},
+                data: names
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                name: '确认',
+                type: 'bar',
+                barGap: 0,
+                label: labelOption,
+                data: confirmed
+            },
+            {
+                name: '治愈',
+                type: 'bar',
+                label: labelOption,
+                data: cured
+            },
+            {
+                name: '疑似',
+                type: 'bar',
+                label: labelOption,
+                data: suspected
+            },
+            {
+                name: '死亡',
+                type: 'bar',
+                label: labelOption,
+                data: dead
+            }
+        ]
+    };;
+    if (option && typeof option === "object") {
+        myChart.setOption(option, true);
+    }
+</script>
+</body>
+</html>
