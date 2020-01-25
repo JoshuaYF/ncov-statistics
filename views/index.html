@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+
 <html style="height: 100%">
 <head>
     <meta charset="utf-8">
@@ -69,7 +71,7 @@
     };
 
     app.config = {
-        rotate: 0,
+        rotate: 90,
         align: 'left',
         verticalAlign: 'middle',
         position: 'insideBottom',
@@ -121,10 +123,10 @@
     option = {
         dataZoom: [
             {
-                type: 'inside',
+                type: 'slider',
                 show: false,
                 start: 0,
-                end: 1
+                end: 2
             }
         ],
 
