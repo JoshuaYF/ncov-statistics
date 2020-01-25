@@ -73,7 +73,7 @@
         var cured;
         var suspected;
         $.ajaxSettings.async = false;
-        $.get("http://www.joshuayf.com/api/province?province_name=" + provinceName, function (dataResp, status) {
+        $.get("http://122.112.235.24/api/province?province_name=" + provinceName, function (dataResp, status) {
             names = dataResp["data"]["names"];
             confirmed = dataResp["data"]["confirmed"];
             dead = dataResp["data"]["dead"];
