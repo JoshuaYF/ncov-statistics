@@ -5,15 +5,20 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"sync"
 	"time"
 )
 
 var result string = ""
 
-func GetAll() map[string]interface{} {
+var once sync.Once
+
+func Province(provinceName string) map[string]interface{} {
 	urlStr := "http://lab.isaaclin.cn/nCoV/api/area"
 	if result == "" {
-		result = Get(urlStr)
+		once.Do(func() {
+			result = Get(urlStr)
+		})
 	}
 	data := Response{}
 
@@ -30,21 +35,46 @@ func GetAll() map[string]interface{} {
 	cured := []int{}
 	suspected := []int{}
 
-	for _, r := range res {
-		names = append(names, r.ProvinceName)
-		confirmed = append(confirmed, r.ConfirmedCount)
-		dead = append(dead, r.DeadCount)
-		cured = append(cured, r.CuredCount)
-		suspected = append(suspected, r.SuspectedCount)
 
-		for _, city := range r.Cities {
-			names = append(names, city.CityName)
-			confirmed = append(confirmed, city.ConfirmedCount)
-			dead = append(dead, city.DeadCount)
-			cured = append(cured, city.CuredCount)
-			suspected = append(suspected, city.SuspectedCount)
-		}
+
+
+
+	r, ok := res[provinceName]
+	if ok == false {
+		 r = res["湖北省"]
 	}
+	names = append(names, r.ProvinceName)
+	confirmed = append(confirmed, r.ConfirmedCount)
+	dead = append(dead, r.DeadCount)
+	cured = append(cured, r.CuredCount)
+	suspected = append(suspected, r.SuspectedCount)
+	for _, city := range r.Cities {
+		names = append(names, city.CityName)
+		confirmed = append(confirmed, city.ConfirmedCount)
+		dead = append(dead, city.DeadCount)
+		cured = append(cured, city.CuredCount)
+		suspected = append(suspected, city.SuspectedCount)
+	}
+
+	//for _, r := range res {
+	//	names = append(names, r.ProvinceName)
+	//	confirmed = append(confirmed, r.ConfirmedCount)
+	//	dead = append(dead, r.DeadCount)
+	//	cured = append(cured, r.CuredCount)
+	//	suspected = append(suspected, r.SuspectedCount)
+	//
+	//	for _, city := range r.Cities {
+	//		names = append(names, city.CityName)
+	//		confirmed = append(confirmed, city.ConfirmedCount)
+	//		dead = append(dead, city.DeadCount)
+	//		cured = append(cured, city.CuredCount)
+	//		suspected = append(suspected, city.SuspectedCount)
+	//	}
+	//}
+
+
+
+
 
 	dataMap := map[string]interface{}{}
 	dataMap["names"] = names
