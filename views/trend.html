@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+<script src="http://cdn.staticfile.org/jquery/2.0.0/jquery.min.js"></script>
+
+<div id="top" style="height: 5%"></div>
+<div id="upper">
+    <input id="上海市" type="button" value="上海市"/>
+    <input id="云南省" type="button" value="云南省"/>
+    <input id="内蒙古自治区" type="button" value="内蒙古自治区"/>
+    <input id="北京市" type="button" value="北京市"/>
+    <input id="台湾" type="button" value="台湾"/>
+    <input id="吉林省" type="button" value="吉林省"/>
+    <input id="四川省" type="button" value="四川省"/>
+    <input id="天津市" type="button" value="天津市"/>
+    <input id="宁夏回族自治区" type="button" value="宁夏回族自治区"/>
+    <input id="安徽省" type="button" value="安徽省"/>
+    <input id="山东省" type="button" value="山东省"/>
+    <input id="山西省" type="button" value="山西省"/>
+    <input id="广东省" type="button" value="广东省"/>
+    <input id="广西壮族自治区" type="button" value="广西壮族自治区"/>
+    <input id="新疆维吾尔自治区" type="button" value="新疆维吾尔自治区"/>
+    <input id="江苏省" type="button" value="江苏省"/>
+    <input id="江西省" type="button" value="江西省"/>
+    <input id="河北省" type="button" value="河北省"/>
+    <input id="河南省" type="button" value="河南省"/>
+    <input id="浙江省" type="button" value="浙江省"/>
+    <input id="海南省" type="button" value="海南省"/>
+    <input id="湖北省" type="button" value="湖北省"/>
+    <input id="湖南省" type="button" value="湖南省"/>
+    <input id="澳门" type="button" value="澳门"/>
+    <input id="甘肃省" type="button" value="甘肃省"/>
+    <input id="福建省" type="button" value="福建省"/>
+    <input id="贵州省" type="button" value="贵州省"/>
+    <input id="辽宁省" type="button" value="辽宁省"/>
+    <input id="重庆市" type="button" value="重庆市"/>
+    <input id="陕西省" type="button" value="陕西省"/>
+    <input id="青海省" type="button" value="青海省"/>
+    <input id="香港" type="button" value="香港"/>
+    <input id="黑龙江省" type="button" value="黑龙江省"/>
+
+    <script>
+        $(document).ready(function(){
+            $("input").click(function () {
+                draw($(this).val())
+            })
+        });
+    </script>
+</div>
+
+<div id="container" style="height: 65%"></div>
+
+
+
+<script type="text/javascript">
+
+    draw("湖北省")
+
+    function draw(provinceName) {
+        var dates;
+        var confirmed;
+        var dead;
+        var cured;
+        var suspected;
+        $.ajaxSettings.async = false;
+        //122.112.235.24
+        $.get("http://122.112.235.24/api/trend?province_name=" + provinceName, function (dataResp, status) {
+            dates = dataResp["data"]["dates"];
+            confirmed = dataResp["data"]["confirmed"];
+            dead = dataResp["data"]["dead"];
+            cured = dataResp["data"]["cured"];
+            suspected = dataResp["data"]["suspected"];
+        }, "json");
+
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+        option = {
+            title: {
+                text: provinceName + ' 趋势'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['确认', '治愈', '疑似', '死亡']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: dates
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '确认',
+                    type: 'line',
+                    data: confirmed
+                },
+                {
+                    name: '治愈',
+                    type: 'line',
+                    data: cured
+                },
+                {
+                    name: '疑似',
+                    type: 'line',
+                    data: suspected
+                },
+                {
+                    name: '死亡',
+                    type: 'line',
+                    data: dead
+                }
+            ]
+        };
+
+
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+    }
+
+</script>
+</body>
+</html>

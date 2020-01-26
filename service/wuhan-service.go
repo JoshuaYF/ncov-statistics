@@ -41,7 +41,7 @@ func Province(provinceName string) map[string]interface{} {
 
 	r, ok := res[provinceName]
 	if ok == false {
-		 r = res["湖北省"]
+		r = res["湖北省"]
 	}
 	names = append(names, r.ProvinceName)
 	confirmed = append(confirmed, r.ConfirmedCount)
@@ -84,6 +84,58 @@ func Province(provinceName string) map[string]interface{} {
 	dataMap["suspected"] = suspected
 
 	return dataMap
+}
+
+func Trend(provinceName string) map[string]interface{} {
+	if provinceName == "" {
+		provinceName = "湖北省"
+	}
+	urlStr := "http://lab.isaaclin.cn/nCoV/api/area"
+	if result == "" {
+		once.Do(func() {
+			result = Get(urlStr)
+		})
+	}
+	data := Response{}
+
+	json.Unmarshal([]byte(result), &data)
+
+	cacheResult := []Result{}
+	for _, r := range data.Results {
+		if r.ProvinceName == provinceName {
+			cacheResult = append(cacheResult, r)
+		}
+	}
+
+	dates := []string{}
+	confirmed := []int{}
+	dead := []int{}
+	cured := []int{}
+	suspected := []int{}
+
+	for _, v := range cacheResult {
+		dates = append(dates, Stamp2Str(int64(v.UpdateTime)))
+		confirmed = append(confirmed, v.ConfirmedCount)
+		dead = append(dead, v.DeadCount)
+		cured = append(cured, v.CuredCount)
+		suspected = append(suspected, v.SuspectedCount)
+	}
+
+	dataMap := map[string]interface{}{}
+	dataMap["dates"] = dates
+	dataMap["confirmed"] = confirmed
+	dataMap["dead"] = dead
+	dataMap["cured"] = cured
+	dataMap["suspected"] = suspected
+
+	return dataMap
+}
+
+/*时间戳->字符串*/
+func Stamp2Str(stamp int64) string{
+	timeLayout := "2006-01-02 15:04:05"
+	str:=time.Unix(stamp/1000, 0).Format(timeLayout)
+	return str
 }
 
 func GetAllData() map[string]Result {
