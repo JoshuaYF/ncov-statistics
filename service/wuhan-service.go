@@ -157,7 +157,7 @@ func GetAllData() map[string]Result {
 func Get(url string) string {
 
 	// 超时时间：5秒
-	client := &http.Client{Timeout: 20 * time.Second}
+	client := &http.Client{Timeout: 180 * time.Second}
 	resp, err := client.Get(url)
 	if err != nil {
 		panic(err)
