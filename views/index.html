@@ -176,8 +176,14 @@
         option = {
             dataZoom: [
                 {
-                    type: 'inside',
                     show: true,
+                    realtime: true,
+                    start: 0,
+                    end: 25,
+                    zoomlock: true
+                },
+                {
+                    type: 'inside',
                     start: 0,
                     end: 25,
                     zoomlock: true
