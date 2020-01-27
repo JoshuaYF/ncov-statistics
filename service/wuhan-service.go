@@ -5,25 +5,27 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-	"sync"
 	"time"
 )
 
-var result string = ""
+const second = int64(1000000000)
 
-var once sync.Once
+type CacheResult struct {
+	Response Response
+	ExpireTime time.Time
+	HasInit bool
+}
+
+var cr CacheResult
 
 func Province(provinceName string) map[string]interface{} {
-	urlStr := "http://lab.isaaclin.cn/nCoV/api/area"
-	if result == "" {
-		once.Do(func() {
-			result = Get(urlStr)
-		})
+	if provinceName == "" {
+		provinceName = "湖北省"
 	}
-	data := Response{}
 
-	json.Unmarshal([]byte(result), &data)
+	initData()
 
+	data := cr.Response
 	res := map[string]Result{}
 	for _, r := range data.Results {
 		res[r.ProvinceName] = r
@@ -34,10 +36,6 @@ func Province(provinceName string) map[string]interface{} {
 	dead := []int{}
 	cured := []int{}
 	suspected := []int{}
-
-
-
-
 
 	r, ok := res[provinceName]
 	if ok == false {
@@ -56,32 +54,14 @@ func Province(provinceName string) map[string]interface{} {
 		suspected = append(suspected, city.SuspectedCount)
 	}
 
-	//for _, r := range res {
-	//	names = append(names, r.ProvinceName)
-	//	confirmed = append(confirmed, r.ConfirmedCount)
-	//	dead = append(dead, r.DeadCount)
-	//	cured = append(cured, r.CuredCount)
-	//	suspected = append(suspected, r.SuspectedCount)
-	//
-	//	for _, city := range r.Cities {
-	//		names = append(names, city.CityName)
-	//		confirmed = append(confirmed, city.ConfirmedCount)
-	//		dead = append(dead, city.DeadCount)
-	//		cured = append(cured, city.CuredCount)
-	//		suspected = append(suspected, city.SuspectedCount)
-	//	}
-	//}
-
-
-
-
-
 	dataMap := map[string]interface{}{}
 	dataMap["names"] = names
 	dataMap["confirmed"] = confirmed
 	dataMap["dead"] = dead
 	dataMap["cured"] = cured
 	dataMap["suspected"] = suspected
+
+	go refreshIfExpired()
 
 	return dataMap
 }
@@ -90,15 +70,9 @@ func Trend(provinceName string) map[string]interface{} {
 	if provinceName == "" {
 		provinceName = "湖北省"
 	}
-	urlStr := "http://lab.isaaclin.cn/nCoV/api/area"
-	if result == "" {
-		once.Do(func() {
-			result = Get(urlStr)
-		})
-	}
-	data := Response{}
+	initData()
 
-	json.Unmarshal([]byte(result), &data)
+	data := cr.Response
 
 	cacheResult := []Result{}
 	for _, r := range data.Results {
@@ -128,7 +102,29 @@ func Trend(provinceName string) map[string]interface{} {
 	dataMap["cured"] = cured
 	dataMap["suspected"] = suspected
 
+	go refreshIfExpired()
+
 	return dataMap
+}
+
+func initData() {
+	now := time.Now()
+
+	if cr.HasInit == false {
+		cr = CacheResult{
+			Response:   GetAllAreaFromDXY(),
+			ExpireTime: now.Add(600_000_000_000), //600s
+			HasInit:    true,
+		}
+	}
+}
+
+func refreshIfExpired() {
+	now := time.Now()
+	if cr.HasInit && cr.ExpireTime.Before(now) {
+		cr.Response = GetAllAreaFromDXY()
+		cr.ExpireTime = now.Add(600_000_000_000)
+	}
 }
 
 /*时间戳->字符串*/
