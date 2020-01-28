@@ -3,7 +3,7 @@ package service
 import "encoding/json"
 
 func GetAllAreaFromDXY() Response {
-	urlStr := "http://lab.isaaclin.cn/nCoV/api/area"
+	urlStr := "http://lab.isaaclin.cn/nCoV/api/area?latest=0"
 
 	resp := Get(urlStr)
 
