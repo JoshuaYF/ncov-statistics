@@ -9,12 +9,14 @@
 
 
 ---
+
 ####部署方式:  
 0. 安装Go语言环境
 1. `go build`
 2. `nohup ./ncov-statistics >& log &`
 
 ---
+
 ####数据来源:  
 >https://github.com/BlankerL/DXY-2019-nCoV-Crawler  
 >http://lab.isaaclin.cn/nCoV/  
