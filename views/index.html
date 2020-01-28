@@ -15,40 +15,119 @@
 <div id="top" style="height: 3%">
 </div>
 <div id="upper">
-    <input id="湖北省" type="button" value="湖北省" style="background-color: red"/>
-    <input id="北京市" type="button" value="北京市" style="background-color: salmon"/>
-    <input id="上海市" type="button" value="上海市" style="background-color: salmon"/>
-    <input id="广东省" type="button" value="广东省" style="background-color: crimson"/>
-    <input id="国外" type="button" value="国外" style="background-color: #0366d6"/>
-    <input id="重庆市" type="button" value="重庆市" style="background-color: crimson"/>
-    <input id="江苏省" type="button" value="江苏省" style="background-color: salmon"/>
-    <input id="浙江省" type="button" value="浙江省" style="background-color: crimson"/>
-    <input id="河南省" type="button" value="河南省" style="background-color: crimson"/>
-    <input id="云南省" type="button" value="云南省"/>
-    <input id="内蒙古自治区" type="button" value="内蒙古自治区"/>
-    <input id="吉林省" type="button" value="吉林省"/>
-    <input id="四川省" type="button" value="四川省" style="background-color: salmon"/>
-    <input id="天津市" type="button" value="天津市"/>
-    <input id="宁夏回族自治区" type="button" value="宁夏回族自治区"/>
-    <input id="安徽省" type="button" value="安徽省" style="background-color: crimson"/>
-    <input id="山东省" type="button" value="山东省" style="background-color: salmon"/>
-    <input id="山西省" type="button" value="山西省"/>
-    <input id="广西壮族自治区" type="button" value="广西壮族自治区"/>
-    <input id="新疆维吾尔自治区" type="button" value="新疆维吾尔自治区"/>
-    <input id="江西省" type="button" value="江西省" style="background-color: salmon"/>
-    <input id="河北省" type="button" value="河北省"/>
-    <input id="海南省" type="button" value="海南省"/>
-    <input id="湖南省" type="button" value="湖南省" style="background-color: crimson"/>
-    <input id="甘肃省" type="button" value="甘肃省"/>
-    <input id="福建省" type="button" value="福建省" style="background-color: salmon"/>
-    <input id="贵州省" type="button" value="贵州省"/>
-    <input id="辽宁省" type="button" value="辽宁省"/>
-    <input id="陕西省" type="button" value="陕西省"/>
-    <input id="青海省" type="button" value="青海省"/>
-    <input id="黑龙江省" type="button" value="黑龙江省"/>
-    <input id="澳门" type="button" value="澳门"/>
-    <input id="香港" type="button" value="香港"/>
-    <input id="台湾" type="button" value="台湾"/>
+    <style>
+    input, button {
+        border: none;
+        outline: none;
+    }
+    .tl-price-input{
+        width: 100%;
+        border: 1px solid #ccc;
+        padding: 7px 0;
+        background: #F4F4F7;
+        border-radius: 3px;
+        padding-left:5px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+    }
+    .tl-price-input:focus{
+        border-color: #66afe9;
+        outline: 0;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+    }
+
+    .ant-btn {
+        line-height: 1.499;
+        position: relative;
+        display: inline-block;
+        font-weight: 400;
+        white-space: nowrap;
+        text-align: center;
+        background-image: none;
+        border: 1px solid transparent;
+        -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.015);
+        box-shadow: 0 2px 0 rgba(0,0,0,0.015);
+        cursor: pointer;
+        -webkit-transition: all .3s cubic-bezier(.645, .045, .355, 1);
+        transition: all .3s cubic-bezier(.645, .045, .355, 1);
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        height: 32px;
+        padding: 0 15px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: rgba(0,0,0,0.65);
+        background-color: #fff;
+        border-color: #d9d9d9;
+    }
+
+    .ant-btn-primary {
+        color: #fff;
+        background-color: #1890ff;
+        border-color: #1890ff;
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.12);
+        -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+        box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+    }
+    .ant-btn-red {
+        color: #fff;
+        background-color: #FF5A44;
+        border-color: #FF5A44;
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.12);
+        -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+        box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+    }
+    .ant-btn-blue {
+        color: #fff;
+        background-color: #5769ff;
+        border-color: #5769ff;
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.12);
+        -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+        box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+    }
+    </style>
+    <input id="湖北省" type="button" value="湖北省" class="ant-btn ant-btn-red"/>
+    <input id="北京市" type="button" value="北京市" class="ant-btn"/>
+    <input id="上海市" type="button" value="上海市" class="ant-btn"/>
+    <input id="广东省" type="button" value="广东省" class="ant-btn ant-btn-red"/>
+    <input id="国外" type="button" value="国外"  class="ant-btn ant-btn-blue"/>
+    <input id="重庆市" type="button" value="重庆市" class="ant-btn ant-btn-red"/>
+    <input id="江苏省" type="button" value="江苏省" class="ant-btn"/>
+    <input id="浙江省" type="button" value="浙江省" class="ant-btn ant-btn-red"/>
+    <input id="河南省" type="button" value="河南省" class="ant-btn ant-btn-red"/>
+    <input id="云南省" type="button" value="云南省" class="ant-btn"/>
+    <input id="内蒙古自治区" type="button" value="内蒙古自治区" class="ant-btn"/>
+    <input id="吉林省" type="button" value="吉林省" class="ant-btn"/>
+    <input id="四川省" type="button" value="四川省" class="ant-btn"/>
+    <input id="天津市" type="button" value="天津市" class="ant-btn"/>
+    <input id="宁夏回族自治区" type="button" value="宁夏回族自治区" class="ant-btn"/>
+    <input id="安徽省" type="button" value="安徽省" class="ant-btn ant-btn-red"/>
+    <input id="山东省" type="button" value="山东省" class="ant-btn"/>
+    <input id="山西省" type="button" value="山西省" class="ant-btn"/>
+    <input id="广西壮族自治区" type="button" value="广西壮族自治区" class="ant-btn"/>
+    <input id="新疆维吾尔自治区" type="button" value="新疆维吾尔自治区" class="ant-btn"/>
+    <input id="江西省" type="button" value="江西省" class="ant-btn"/>
+    <input id="河北省" type="button" value="河北省" class="ant-btn"/>
+    <input id="海南省" type="button" value="海南省" class="ant-btn"/>
+    <input id="湖南省" type="button" value="湖南省" class="ant-btn ant-btn-red"/>
+    <input id="甘肃省" type="button" value="甘肃省" class="ant-btn"/>
+    <input id="福建省" type="button" value="福建省" class="ant-btn"/>
+    <input id="贵州省" type="button" value="贵州省" class="ant-btn"/>
+    <input id="辽宁省" type="button" value="辽宁省" class="ant-btn"/>
+    <input id="陕西省" type="button" value="陕西省" class="ant-btn"/>
+    <input id="青海省" type="button" value="青海省" class="ant-btn"/>
+    <input id="黑龙江省" type="button" value="黑龙江省" class="ant-btn"/>
+    <input id="澳门" type="button" value="澳门" class="ant-btn"/>
+    <input id="香港" type="button" value="香港" class="ant-btn"/>
+    <input id="台湾" type="button" value="台湾" class="ant-btn"/>
 
     <script>
         $(document).ready(function(){
