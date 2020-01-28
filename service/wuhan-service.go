@@ -41,6 +41,30 @@ func Province(provinceName string) map[string]interface{} {
 	if ok == false {
 		r = res["湖北省"]
 	}
+	if provinceName == "国外" {
+		res0 := map[string]Result{}
+		for _, r := range cr.Response.Results {
+			if r.Country != "中国" {
+				res0[r.ProvinceName] = r
+			}
+		}
+		for _, v := range res0 {
+			names = append(names, v.ProvinceName)
+			confirmed = append(confirmed, v.ConfirmedCount)
+			dead = append(dead, v.DeadCount)
+			cured = append(cured, v.CuredCount)
+			suspected = append(suspected, v.SuspectedCount)
+		}
+		dataMap := map[string]interface{}{}
+		dataMap["names"] = names
+		dataMap["confirmed"] = confirmed
+		dataMap["dead"] = dead
+		dataMap["cured"] = cured
+		dataMap["suspected"] = suspected
+
+		return dataMap
+	}
+
 	names = append(names, r.ProvinceName)
 	confirmed = append(confirmed, r.ConfirmedCount)
 	dead = append(dead, r.DeadCount)
@@ -180,6 +204,7 @@ type Response struct {
 }
 
 type Result struct {
+	Country string `json:"country"`
 	Cities            []City `json:"cities"`
 	Comment           string `json:"comment"`
 	ConfirmedCount    int    `json:"confirmedCount"`
