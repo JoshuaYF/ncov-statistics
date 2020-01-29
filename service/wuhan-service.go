@@ -162,6 +162,8 @@ func Map(provinceName string) map[string]interface{} {
 	}
 	resp["list"] = list
 
+	go refreshIfExpired()
+
 	return resp
 }
 

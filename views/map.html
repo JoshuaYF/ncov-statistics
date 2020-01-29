@@ -101,35 +101,35 @@
     <input id="北京市" type="button" value="北京市" class="ant-btn"/>
     <input id="上海市" type="button" value="上海市" class="ant-btn"/>
     <input id="广东省" type="button" value="广东省" class="ant-btn ant-btn-red"/>
-    <input id="重庆市" type="button" value="重庆市" class="ant-btn ant-btn-red"/>
+<!--    <input id="重庆市" type="button" value="重庆市" class="ant-btn ant-btn-red"/>-->
     <input id="江苏省" type="button" value="江苏省" class="ant-btn"/>
     <input id="浙江省" type="button" value="浙江省" class="ant-btn ant-btn-red"/>
     <input id="河南省" type="button" value="河南省" class="ant-btn ant-btn-red"/>
-    <input id="云南省" type="button" value="云南省" class="ant-btn"/>
-    <input id="内蒙古自治区" type="button" value="内蒙古自治区" class="ant-btn"/>
+<!--    <input id="云南省" type="button" value="云南省" class="ant-btn"/>-->
+<!--    <input id="内蒙古自治区" type="button" value="内蒙古自治区" class="ant-btn"/>-->
     <input id="吉林省" type="button" value="吉林省" class="ant-btn"/>
     <input id="四川省" type="button" value="四川省" class="ant-btn"/>
     <input id="天津市" type="button" value="天津市" class="ant-btn"/>
-    <input id="宁夏回族自治区" type="button" value="宁夏回族自治区" class="ant-btn"/>
+<!--    <input id="宁夏回族自治区" type="button" value="宁夏回族自治区" class="ant-btn"/>-->
     <input id="安徽省" type="button" value="安徽省" class="ant-btn ant-btn-red"/>
     <input id="山东省" type="button" value="山东省" class="ant-btn"/>
     <input id="山西省" type="button" value="山西省" class="ant-btn"/>
-    <input id="广西壮族自治区" type="button" value="广西壮族自治区" class="ant-btn"/>
-    <input id="新疆维吾尔自治区" type="button" value="新疆维吾尔自治区" class="ant-btn"/>
+<!--    <input id="广西壮族自治区" type="button" value="广西壮族自治区" class="ant-btn"/>-->
+<!--    <input id="新疆维吾尔自治区" type="button" value="新疆维吾尔自治区" class="ant-btn"/>-->
     <input id="江西省" type="button" value="江西省" class="ant-btn"/>
     <input id="河北省" type="button" value="河北省" class="ant-btn"/>
-    <input id="海南省" type="button" value="海南省" class="ant-btn"/>
+<!--    <input id="海南省" type="button" value="海南省" class="ant-btn"/>-->
     <input id="湖南省" type="button" value="湖南省" class="ant-btn ant-btn-red"/>
-    <input id="甘肃省" type="button" value="甘肃省" class="ant-btn"/>
+<!--    <input id="甘肃省" type="button" value="甘肃省" class="ant-btn"/>-->
     <input id="福建省" type="button" value="福建省" class="ant-btn"/>
-    <input id="贵州省" type="button" value="贵州省" class="ant-btn"/>
+<!--    <input id="贵州省" type="button" value="贵州省" class="ant-btn"/>-->
     <input id="辽宁省" type="button" value="辽宁省" class="ant-btn"/>
     <input id="陕西省" type="button" value="陕西省" class="ant-btn"/>
-    <input id="青海省" type="button" value="青海省" class="ant-btn"/>
+<!--    <input id="青海省" type="button" value="青海省" class="ant-btn"/>-->
     <input id="黑龙江省" type="button" value="黑龙江省" class="ant-btn"/>
-    <input id="澳门" type="button" value="澳门" class="ant-btn"/>
-    <input id="香港" type="button" value="香港" class="ant-btn"/>
-    <input id="台湾" type="button" value="台湾" class="ant-btn"/>
+<!--    <input id="澳门" type="button" value="澳门" class="ant-btn"/>-->
+<!--    <input id="香港" type="button" value="香港" class="ant-btn"/>-->
+<!--    <input id="台湾" type="button" value="台湾" class="ant-btn"/>-->
 
     <script>
         $(document).ready(function(){
@@ -153,11 +153,7 @@
         </a>
     </div>
 </div>
-<div id="container" style="height: 65%"></div>
-
-
-
-
+<div id="container" style="height: 80%"></div>
 
 
 <script type="text/javascript">
@@ -167,6 +163,10 @@
 
         var map;
         var list;
+        var zoom = 1.4;
+        if (provinceName == "上海市" || provinceName == "北京市" || provinceName == "重庆市" || provinceName == "天津市") {
+            zoom = 2.5
+        }
 
         $.ajaxSettings.async = false;
         //122.112.235.24
@@ -209,12 +209,12 @@
             },
             visualMap: {
                 min: 1,
-                max: 6000,
+                max: 100,
                 text: ['High', 'Low'],
                 realtime: false,
                 calculable: true,
                 inRange: {
-                    color: ['lightskyblue', 'yellow', 'orangered']
+                    color: ['yellow', 'orangered', 'red', '#580105']
                 }
             },
             series: [
@@ -222,6 +222,8 @@
                     name: provinceName + '疫情地图',
                     type: 'map',
                     mapType: 'MAP', // 自定义扩展图表类型
+                    zoom: zoom, //当前视角的缩放比例
+                    roam: true, //是否开启平游或缩放
                     label: {
                         show: true
                     },
