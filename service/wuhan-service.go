@@ -202,7 +202,7 @@ func Stamp2Str(stamp int64) string{
 }
 
 func GetAllData() map[string]Result {
-	urlStr := "http://lab.isaaclin.cn/nCoV/api/area"
+	urlStr := "https://lab.isaaclin.cn/nCoV/api/area"
 	result := Get(urlStr)
 	data := Response{}
 
