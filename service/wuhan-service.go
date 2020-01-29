@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"time"
 )
@@ -180,6 +181,12 @@ func initData() {
 }
 
 func refreshIfExpired() {
+	defer func() {
+		err := recover()
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 	now := time.Now()
 	if cr.HasInit && cr.ExpireTime.Before(now) {
 		cr.Response = GetAllAreaFromDXY()
