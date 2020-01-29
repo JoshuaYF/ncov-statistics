@@ -2,6 +2,7 @@ package service
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"io"
 	"io/ioutil"
@@ -202,6 +203,7 @@ func Stamp2Str(stamp int64) string{
 }
 
 func GetAllData() map[string]Result {
+	//https://lab.isaaclin.cn/nCoV/
 	urlStr := "https://lab.isaaclin.cn/nCoV/api/area"
 	result := Get(urlStr)
 	data := Response{}
@@ -220,7 +222,12 @@ func GetAllData() map[string]Result {
 func Get(url string) string {
 
 	// 超时时间：5秒
-	client := &http.Client{Timeout: 180 * time.Second}
+	client := &http.Client{
+		Timeout: 180 * time.Second,
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
+	}
 	resp, err := client.Get(url)
 	if err != nil {
 		panic(err)
