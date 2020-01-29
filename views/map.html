@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+<script src="http://cdn.staticfile.org/jquery/2.0.0/jquery.min.js"></script>
+<!--        <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script> -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+
+<div id="top" style="height: 3%">
+</div>
+<div id="upper">
+    <style>
+        input, button {
+            border: none;
+            outline: none;
+        }
+        .tl-price-input{
+            width: 100%;
+            border: 1px solid #ccc;
+            padding: 7px 0;
+            background: #F4F4F7;
+            border-radius: 3px;
+            padding-left:5px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+        }
+        .tl-price-input:focus{
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+        }
+
+        .ant-btn {
+            line-height: 1.499;
+            position: relative;
+            display: inline-block;
+            font-weight: 400;
+            white-space: nowrap;
+            text-align: center;
+            background-image: none;
+            border: 1px solid transparent;
+            -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.015);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.015);
+            cursor: pointer;
+            -webkit-transition: all .3s cubic-bezier(.645, .045, .355, 1);
+            transition: all .3s cubic-bezier(.645, .045, .355, 1);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            height: 32px;
+            padding: 0 15px;
+            font-size: 14px;
+            border-radius: 4px;
+            color: rgba(0,0,0,0.65);
+            background-color: #fff;
+            border-color: #d9d9d9;
+        }
+
+        .ant-btn-primary {
+            color: #fff;
+            background-color: #1890ff;
+            border-color: #1890ff;
+            text-shadow: 0 -1px 0 rgba(0,0,0,0.12);
+            -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+        }
+        .ant-btn-red {
+            color: #fff;
+            background-color: #FF5A44;
+            border-color: #FF5A44;
+            text-shadow: 0 -1px 0 rgba(0,0,0,0.12);
+            -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+        }
+        .ant-btn-blue {
+            color: #fff;
+            background-color: #5769ff;
+            border-color: #5769ff;
+            text-shadow: 0 -1px 0 rgba(0,0,0,0.12);
+            -webkit-box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.045);
+        }
+    </style>
+    <input id="湖北省" type="button" value="湖北省" class="ant-btn ant-btn-red"/>
+    <input id="北京市" type="button" value="北京市" class="ant-btn"/>
+    <input id="上海市" type="button" value="上海市" class="ant-btn"/>
+    <input id="广东省" type="button" value="广东省" class="ant-btn ant-btn-red"/>
+    <input id="重庆市" type="button" value="重庆市" class="ant-btn ant-btn-red"/>
+    <input id="江苏省" type="button" value="江苏省" class="ant-btn"/>
+    <input id="浙江省" type="button" value="浙江省" class="ant-btn ant-btn-red"/>
+    <input id="河南省" type="button" value="河南省" class="ant-btn ant-btn-red"/>
+    <input id="云南省" type="button" value="云南省" class="ant-btn"/>
+    <input id="内蒙古自治区" type="button" value="内蒙古自治区" class="ant-btn"/>
+    <input id="吉林省" type="button" value="吉林省" class="ant-btn"/>
+    <input id="四川省" type="button" value="四川省" class="ant-btn"/>
+    <input id="天津市" type="button" value="天津市" class="ant-btn"/>
+    <input id="宁夏回族自治区" type="button" value="宁夏回族自治区" class="ant-btn"/>
+    <input id="安徽省" type="button" value="安徽省" class="ant-btn ant-btn-red"/>
+    <input id="山东省" type="button" value="山东省" class="ant-btn"/>
+    <input id="山西省" type="button" value="山西省" class="ant-btn"/>
+    <input id="广西壮族自治区" type="button" value="广西壮族自治区" class="ant-btn"/>
+    <input id="新疆维吾尔自治区" type="button" value="新疆维吾尔自治区" class="ant-btn"/>
+    <input id="江西省" type="button" value="江西省" class="ant-btn"/>
+    <input id="河北省" type="button" value="河北省" class="ant-btn"/>
+    <input id="海南省" type="button" value="海南省" class="ant-btn"/>
+    <input id="湖南省" type="button" value="湖南省" class="ant-btn ant-btn-red"/>
+    <input id="甘肃省" type="button" value="甘肃省" class="ant-btn"/>
+    <input id="福建省" type="button" value="福建省" class="ant-btn"/>
+    <input id="贵州省" type="button" value="贵州省" class="ant-btn"/>
+    <input id="辽宁省" type="button" value="辽宁省" class="ant-btn"/>
+    <input id="陕西省" type="button" value="陕西省" class="ant-btn"/>
+    <input id="青海省" type="button" value="青海省" class="ant-btn"/>
+    <input id="黑龙江省" type="button" value="黑龙江省" class="ant-btn"/>
+    <input id="澳门" type="button" value="澳门" class="ant-btn"/>
+    <input id="香港" type="button" value="香港" class="ant-btn"/>
+    <input id="台湾" type="button" value="台湾" class="ant-btn"/>
+
+    <script>
+        $(document).ready(function(){
+            $("input").click(function () {
+                draw($(this).val())
+            })
+        });
+    </script>
+</div>
+<div id="middle">
+    <style type="text/css">body{margin:0}a{text-decoration:none;outline:0}.widget{display:inline-block;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-size:0;white-space:nowrap}.btn,.social-count{position:relative;display:inline-block;height:14px;padding:2px 5px;font-size:11px;font-weight:600;line-height:14px;vertical-align:bottom;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-repeat:repeat-x;background-position:-1px -1px;background-size:110% 110%;border:1px solid}.btn{border-radius:.25em}.btn:not(:last-child){border-radius:.25em 0 0 .25em}.social-count{border-left:0;border-radius:0 .25em .25em 0}.widget-lg .btn,.widget-lg .social-count{height:20px;padding:3px 10px;font-size:12px;line-height:20px}.octicon{display:inline-block;vertical-align:text-top;fill:currentColor}.btn{color:#24292e;background-color:#eff3f6;background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'%3e%3clinearGradient id='o' x2='0' y2='1'%3e%3cstop stop-color='%23fafbfc'/%3e%3cstop offset='90%25' stop-color='%23eff3f6'/%3e%3c/linearGradient%3e%3crect width='100%25' height='100%25' fill='url(%23o)'/%3e%3c/svg%3e");background-image:-moz-linear-gradient(top, #fafbfc, #eff3f6 90%);background-image:linear-gradient(180deg, #fafbfc, #eff3f6 90%);filter:progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFFAFBFC', endColorstr='#FFEEF2F5');border-color:#cdcfd1;border-color:rgba(27,31,35,.2)}:root .btn{filter:none}.btn:focus,.btn:hover{background-color:#e6ebf1;background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg'%3e%3clinearGradient id='o' x2='0' y2='1'%3e%3cstop stop-color='%23f0f3f6'/%3e%3cstop offset='90%25' stop-color='%23e6ebf1'/%3e%3c/linearGradient%3e%3crect width='100%25' height='100%25' fill='url(%23o)'/%3e%3c/svg%3e");background-image:-moz-linear-gradient(top, #f0f3f6, #e6ebf1 90%);background-image:linear-gradient(180deg, #f0f3f6, #e6ebf1 90%);filter:progid:DXImageTransform.Microsoft.Gradient(startColorstr='#FFF0F3F6', endColorstr='#FFE5EAF0');background-position:-0.5em;border-color:#acaeb0;border-color:rgba(27,31,35,.35)}:root .btn:focus,:root .btn:hover{filter:none}.btn:active{background-color:#e9ecef;background-image:none;border-color:#acaeb0;border-color:rgba(27,31,35,.35);box-shadow:inset 0 .15em .3em rgba(27,31,35,.15);filter:none}.social-count{color:#24292e;background-color:#fff;border-color:#d1d2d3;border-color:rgba(27,31,35,.2)}.social-count:focus,.social-count:hover{color:#0366d6}.octicon-heart{color:#ea4aaa}</style>
+    <div class="widget widget-lg">
+        <a class="btn" href="https://github.com/JoshuaYF/ncov-statistics" target="_blank" rel="noopener" aria-label="Star JoshuaYF/ncov-statistics on GitHub">
+            <svg viewBox="0 0 14 16" class="octicon octicon-star" style="width: 14px; height: 16px;" aria-hidden="true">
+                <path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z">
+                </path>
+            </svg>
+            <span>
+                Star JoshuaYF/ncov-statistics on GitHub
+            </span>
+        </a>
+    </div>
+</div>
+<div id="container" style="height: 65%"></div>
+
+
+
+
+
+
+<script type="text/javascript">
+    draw("湖北省")
+
+    function draw(provinceName) {
+
+        var map;
+        var list;
+
+        $.ajaxSettings.async = false;
+        //122.112.235.24
+        $.get("http://122.112.235.24/api/map/info?province_name=" + provinceName, function (dataResp, status) {
+            map = dataResp["data"]["map"];
+            list = dataResp["data"]["list"];
+
+        }, "json");
+
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+        myChart.showLoading();
+
+        myChart.hideLoading();
+
+        echarts.registerMap('MAP', map);
+
+        myChart.setOption(option = {
+            title: {
+                text: provinceName + '疫情地图'
+                // subtext: '人口密度数据来自Wikipedia',
+                // sublink: 'http://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF%E8%A1%8C%E6%94%BF%E5%8D%80%E5%8A%83#cite_note-12'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{b}<br/>{c} (p / km2)'
+            },
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    dataView: {readOnly: false},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            visualMap: {
+                min: 1,
+                max: 6000,
+                text: ['High', 'Low'],
+                realtime: false,
+                calculable: true,
+                inRange: {
+                    color: ['lightskyblue', 'yellow', 'orangered']
+                }
+            },
+            series: [
+                {
+                    name: provinceName + '疫情地图',
+                    type: 'map',
+                    mapType: 'MAP', // 自定义扩展图表类型
+                    label: {
+                        show: true
+                    },
+                    data: list
+                }
+            ]
+        });
+
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+    }
+</script>
+</body>
+</html>

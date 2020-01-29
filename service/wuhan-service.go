@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"time"
 )
@@ -131,6 +132,39 @@ func Trend(provinceName string) map[string]interface{} {
 	return dataMap
 }
 
+func Map(provinceName string) map[string]interface{} {
+	if provinceName == "" {
+		provinceName = "湖北省"
+	}
+
+	resp := map[string]interface{}{}
+
+	initData()
+
+	data := cr.Response
+	res := map[string]Result{}
+	for _, r := range data.Results {
+		res[r.ProvinceName] = r
+	}
+
+	file, _ := ioutil.ReadFile("./views/maps/" + provinceName + ".json")
+	str := string(file)
+
+	resp["map"] = str
+
+	list := []NameValuePair{}
+	province := res[provinceName]
+	for _, city := range province.Cities {
+		list = append(list, NameValuePair{
+			Name:  city.CityName,
+			Value: city.ConfirmedCount,
+		})
+	}
+	resp["list"] = list
+
+	return resp
+}
+
 func initData() {
 	now := time.Now()
 
@@ -222,4 +256,9 @@ type City struct {
 	CuredCount     int    `json:"curedCount"`
 	DeadCount      int    `json:"deadCount"`
 	SuspectedCount int    `json:"suspectedCount"`
+}
+
+type NameValuePair struct {
+	Name string `json:"name"`
+	Value int `json:"value"`
 }

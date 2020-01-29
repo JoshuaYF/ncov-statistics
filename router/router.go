@@ -42,13 +42,14 @@ func InitRouter() *gin.Engine {
 
 	r.Use(gin.Recovery())
 
-	r.LoadHTMLGlob("./views/*")
+	r.LoadHTMLGlob("./views/*.html")
 
 	apiGroup := r.Group("/api")
 
 	apiGroup.GET("/province", Province)
 	apiGroup.GET("/trend", Trend)
 	apiGroup.GET("/areas", Area)
+	apiGroup.GET("/map/info", Map)
 
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
@@ -58,6 +59,12 @@ func InitRouter() *gin.Engine {
 
 	r.GET("/trend", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "trend.html", gin.H{
+			"title": "武汉加油",
+		})
+	})
+
+	r.GET("/map", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "map.html", gin.H{
 			"title": "武汉加油",
 		})
 	})
@@ -91,4 +98,13 @@ func Area(c *gin.Context) {
 	)
 
 	appG.Response(SUCCESS, service.GetAllData())
+}
+
+func Map(c *gin.Context) {
+	var (
+		appG = Gin{C: c}
+		provinceName = c.Query("province_name")
+	)
+
+	appG.Response(SUCCESS, service.Map(provinceName))
 }
