@@ -111,7 +111,7 @@ func Trend(provinceName string) map[string]interface{} {
 	}
 
 	// sort
-	sort.Slice(&cacheResult, func(i, j int) bool {
+	sort.Slice(cacheResult, func(i, j int) bool {
 		if cacheResult[i].UpdateTime < cacheResult[j].UpdateTime {
 			return true
 		}
