@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sort"
 	"time"
 )
 
@@ -20,6 +21,7 @@ type CacheResult struct {
 }
 
 var cr CacheResult
+var history CacheResult
 
 func Province(provinceName string) map[string]interface{} {
 	if provinceName == "" {
@@ -97,9 +99,9 @@ func Trend(provinceName string) map[string]interface{} {
 	if provinceName == "" {
 		provinceName = "湖北省"
 	}
-	initData()
+	initHistoryData()
 
-	data := cr.Response
+	data := history.Response
 
 	cacheResult := []Result{}
 	for _, r := range data.Results {
@@ -107,6 +109,15 @@ func Trend(provinceName string) map[string]interface{} {
 			cacheResult = append(cacheResult, r)
 		}
 	}
+
+	// sort
+	sort.Slice(&cacheResult, func(i, j int) bool {
+		if cacheResult[i].UpdateTime < cacheResult[j].UpdateTime {
+			return true
+		}
+
+		return false
+	})
 
 	dates := []string{}
 	confirmed := []int{}
@@ -181,6 +192,18 @@ func initData() {
 	}
 }
 
+func initHistoryData() {
+	now := time.Now()
+
+	if history.HasInit == false {
+		history = CacheResult{
+			Response:   GetHistoryAreaFromDXY(),
+			ExpireTime: now.Add(600_000_000_000), //600s
+			HasInit:    true,
+		}
+	}
+}
+
 func refreshIfExpired() {
 	defer func() {
 		err := recover()
@@ -192,6 +215,20 @@ func refreshIfExpired() {
 	if cr.HasInit && cr.ExpireTime.Before(now) {
 		cr.Response = GetAllAreaFromDXY()
 		cr.ExpireTime = now.Add(600_000_000_000)
+	}
+}
+
+func refreshHistoryIfExpired() {
+	defer func() {
+		err := recover()
+		if err != nil {
+			log.Println(err)
+		}
+	}()
+	now := time.Now()
+	if history.HasInit && history.ExpireTime.Before(now) {
+		history.Response = GetHistoryAreaFromDXY()
+		history.ExpireTime = now.Add(600_000_000_000)
 	}
 }
 
