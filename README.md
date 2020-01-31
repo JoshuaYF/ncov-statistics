@@ -1,5 +1,6 @@
 # 武汉新型冠状病毒疫情数据 #
->基于丁香园Open API和Echarts的武汉新型冠状病毒肺炎疫情统计图。
+>武汉新型冠状病毒肺炎疫情热力统计图  
+>`https://joshuayf.github.io/ncov-statistics/`
 
 ## 疫情统计信息链接:  ##  
 
