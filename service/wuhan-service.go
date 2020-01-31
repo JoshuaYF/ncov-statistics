@@ -28,9 +28,9 @@ func Province(provinceName string) map[string]interface{} {
 		provinceName = "湖北省"
 	}
 
-	initData()
+	initHistoryData()
 
-	data := cr.Response
+	data := history.Response
 	res := map[string]Result{}
 	for _, r := range data.Results {
 		if v, ok := res[r.ProvinceName]; !ok || v.UpdateTime <= r.UpdateTime {
@@ -50,9 +50,11 @@ func Province(provinceName string) map[string]interface{} {
 	}
 	if provinceName == "国外" {
 		res0 := map[string]Result{}
-		for _, r := range cr.Response.Results {
+		for _, r := range history.Response.Results {
 			if r.Country != "中国" {
-				res0[r.ProvinceName] = r
+				if v, ok := res0[r.ProvinceName]; !ok || v.UpdateTime <= r.UpdateTime {
+					res0[r.ProvinceName] = r
+				}
 			}
 		}
 		for _, v := range res0 {
@@ -92,7 +94,7 @@ func Province(provinceName string) map[string]interface{} {
 	dataMap["cured"] = cured
 	dataMap["suspected"] = suspected
 
-	go refreshIfExpired()
+	go refreshHistoryIfExpired()
 
 	return dataMap
 }
@@ -142,7 +144,7 @@ func Trend(provinceName string) map[string]interface{} {
 	dataMap["cured"] = cured
 	dataMap["suspected"] = suspected
 
-	go refreshIfExpired()
+	go refreshHistoryIfExpired()
 
 	return dataMap
 }
@@ -154,9 +156,9 @@ func Map(provinceName string) map[string]interface{} {
 
 	resp := map[string]interface{}{}
 
-	initData()
+	initHistoryData()
 
-	data := cr.Response
+	data := history.Response
 	res := map[string]Result{}
 	for _, r := range data.Results {
 		if v, ok := res[r.ProvinceName]; !ok || v.UpdateTime <= r.UpdateTime {
@@ -179,7 +181,7 @@ func Map(provinceName string) map[string]interface{} {
 	}
 	resp["list"] = list
 
-	go refreshIfExpired()
+	go refreshHistoryIfExpired()
 
 	return resp
 }
