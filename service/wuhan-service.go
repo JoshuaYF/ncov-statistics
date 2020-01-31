@@ -33,7 +33,9 @@ func Province(provinceName string) map[string]interface{} {
 	data := cr.Response
 	res := map[string]Result{}
 	for _, r := range data.Results {
-		res[r.ProvinceName] = r
+		if v, ok := res[r.ProvinceName]; !ok || v.UpdateTime <= r.UpdateTime {
+			res[r.ProvinceName] = r
+		}
 	}
 
 	names := []string{}
@@ -157,7 +159,9 @@ func Map(provinceName string) map[string]interface{} {
 	data := cr.Response
 	res := map[string]Result{}
 	for _, r := range data.Results {
-		res[r.ProvinceName] = r
+		if v, ok := res[r.ProvinceName]; !ok || v.UpdateTime <= r.UpdateTime {
+			res[r.ProvinceName] = r
+		}
 	}
 
 	file, _ := ioutil.ReadFile("./views/maps/" + provinceName + ".json")
