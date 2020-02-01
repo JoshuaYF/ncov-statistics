@@ -16,7 +16,7 @@ func GetAllAreaFromDXY() Response {
 }
 
 func GetHistoryAreaFromDXY() Response {
-	urlStr := "https://lab.ahusmart.com/nCoV/api/area?latest=1"
+	urlStr := "https://lab.ahusmart.com/nCoV/api/area?latest=0"
 
 	resp := Get(urlStr)
 
